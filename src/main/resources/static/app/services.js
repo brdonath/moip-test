@@ -1,17 +1,12 @@
-(function(angular) {
-  var ItemFactory = function($resource) {
+angular.module("myApp").factory("Item", ['$resource', function ($resource) {
     return $resource('/items/:id', {
-      id: '@id'
+        id: '@id'
     }, {
-      update: {
-        method: "PUT"
-      },
-      remove: {
-        method: "DELETE"
-      }
+        update: {
+            method: "PUT"
+        },
+        remove: {
+            method: "DELETE"
+        }
     });
-  };
-  
-  ItemFactory.$inject = ['$resource'];
-  angular.module("myApp.services").factory("Item", ItemFactory);
-}(angular));
+}]);
