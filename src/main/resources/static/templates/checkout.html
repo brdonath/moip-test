@@ -1,0 +1,16 @@
+<h1>{{product.description}}</h1>
+
+<div id="creditcard">
+    <form>
+        <div id="finalPrice">
+            <textarea ng-model="finalPrice" ng-value="product.price"></textarea>
+        </div>
+        <input type="text" placeholder="Credit card number" id="cc_number" ng-model="cc.cc_number"/>
+        <input type="text" placeholder="CVC" id="cc_cvc" ng-model="cc.cc_cvc"/>
+        <input type="text" placeholder="Month" id="cc_exp_month" ng-model="cc.cc_exp_month"/>
+        <input type="text" placeholder="Year" id="cc_exp_year" ng-model="cc.cc_exp_year"/>
+        <input type="text" placeholder="Card Type" id="card_type"/>
+        <input type="button" value="Comprar" id="encrypt" ng-click="placeAnOrder(cc, product, product.price)"/>
+    </form>
+
+</div>
