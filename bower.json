@@ -5,6 +5,7 @@
     "angular-resource": "~1.6.3",
     "bootstrap-css-only": "~3.2.0",
     "lodash": "^4.17.4",
-    "angular-ui-router": "^0.4.2"
+    "angular-ui-router": "^0.4.2",
+    "ng-stomp": "^0.4.0"
   }
 }

@@ -9,7 +9,7 @@ angular.module("myApp")
         };
 
     }])
-    .controller("CheckoutController", ['$scope','$state', '$stateParams', 'Order', function ($scope, $state, $stateParams, Order) {
+    .controller("CheckoutController", ['$scope', '$state', '$stateParams', 'Order', function ($scope, $state, $stateParams, Order) {
         $scope.product = $stateParams.product;
         $scope.cartProd = {
             finalPrice: $scope.product.price,
@@ -61,7 +61,7 @@ angular.module("myApp")
                 installments: cc.cc_installments
             }).$save(function (order) {
                 console.log(order);
-                $state.go("receipt");
+                $state.go("receipt", {order: order});
             }, function (err) {
                 alert("algo deu errado, tente novamente.")
             });
@@ -89,8 +89,25 @@ angular.module("myApp")
                 $scope.cartProd.diffPrice.inst;
         };
     }])
-    .controller("ReceiptController", ['$scope', function ($scope) {
+    .controller("ReceiptController", ['$scope', '$stateParams', function ($scope, $stateParams) {
 
+        $scope.statusList = [];
+        $scope.order = $stateParams.order;
 
+        var socket = new SockJS('/ws');
+
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/' + $stateParams.order.paymentId, function (res) {
+                $scope.statusList.push("Aguardando resposta..., seu status atual: " + res.body);
+                if (res.body == "AUTHORIZED") {
+                    $scope.statusList.push("Sua compra foi realizada com sucesso");
+                    stompClient.unsubscribe();
+                    stompClient.disconnect();
+                }
+                $scope.$apply();
+            });
+        });
     }]);
 

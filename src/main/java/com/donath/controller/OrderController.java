@@ -28,8 +28,10 @@ public class OrderController {
     public Order placeAnOrder(@RequestBody Order order){
         order.setStatus(Order.Status.PROCESSING);
         Order newOrder = moipService.placeMoipOrder(order);
-        orderRepository.saveAndFlush(newOrder);
         Payment payment = moipService.createPayment(newOrder);
+
+        newOrder.setPaymentId(payment.getId());
+        orderRepository.saveAndFlush(newOrder);
         return newOrder;
     }
 

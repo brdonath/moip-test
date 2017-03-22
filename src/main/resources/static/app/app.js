@@ -19,6 +19,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('receipt', {
             url: '/receipt',
+            params: {order: null},
             controller: 'ReceiptController',
             templateUrl: 'templates/receipt.html'
         });

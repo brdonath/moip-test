@@ -21,6 +21,9 @@ public class Order {
     @Column
     private Integer installments;
 
+    @Column
+    private String paymentId;
+
     @ManyToOne
     private Product product;
 
@@ -73,6 +76,14 @@ public class Order {
 
     public void setInstallments(Integer installments) {
         this.installments = installments;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     public enum Status {
