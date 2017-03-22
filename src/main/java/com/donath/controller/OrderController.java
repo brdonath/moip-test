@@ -25,14 +25,12 @@ public class OrderController {
     private OrderRepository orderRepository;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void placeAnOrder(@RequestBody Order order){
-
-        System.out.println(order);
+    public Order placeAnOrder(@RequestBody Order order){
         order.setStatus(Order.Status.PROCESSING);
-
         Order newOrder = moipService.placeMoipOrder(order);
-        Order savedOrder = orderRepository.saveAndFlush(order);
-        Payment payment = moipService.createPayment(savedOrder);
+        orderRepository.saveAndFlush(newOrder);
+        Payment payment = moipService.createPayment(newOrder);
+        return newOrder;
     }
 
 }

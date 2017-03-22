@@ -13,9 +13,14 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('checkout', {
             url: '/checkout',
-            params : { product : null},
+            params: {product: null},
             controller: 'CheckoutController',
             templateUrl: 'templates/checkout.html'
+        })
+        .state('receipt', {
+            url: '/receipt',
+            controller: 'ReceiptController',
+            templateUrl: 'templates/receipt.html'
         });
 
 });

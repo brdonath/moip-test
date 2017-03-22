@@ -1,11 +1,12 @@
 package com.donath.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Created by cin_bdonath on 21/03/2017.
  */
-@Entity
+@Entity(name = "PLACE_ORDER")
 public class Order {
 
     @Id
@@ -15,9 +16,12 @@ public class Order {
     private Order.Status status;
 
     @Column
-    private Integer finalPrice;
+    private BigDecimal finalPrice;
 
-    @Transient
+    @Column
+    private Integer installments;
+
+    @ManyToOne
     private Product product;
 
     @Transient
@@ -47,11 +51,11 @@ public class Order {
         this.status = status;
     }
 
-    public Integer getFinalPrice() {
+    public BigDecimal getFinalPrice() {
         return finalPrice;
     }
 
-    public void setFinalPrice(Integer finalPrice) {
+    public void setFinalPrice(BigDecimal finalPrice) {
         this.finalPrice = finalPrice;
     }
 
@@ -61,6 +65,14 @@ public class Order {
 
     public void setCcHash(String ccHash) {
         this.ccHash = ccHash;
+    }
+
+    public Integer getInstallments() {
+        return installments;
+    }
+
+    public void setInstallments(Integer installments) {
+        this.installments = installments;
     }
 
     public enum Status {

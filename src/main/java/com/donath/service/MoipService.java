@@ -8,6 +8,7 @@ import com.donath.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -25,7 +26,7 @@ public class MoipService {
         Payment createdPayment = moipAPI.payment().create(
                 new PaymentRequest()
                         .orderId(order.getId())
-                        .installmentCount(1)
+                        .installmentCount(order.getInstallments())
                         .fundingInstrument(
                                 new FundingInstrumentRequest()
                                         .creditCard(
@@ -54,7 +55,8 @@ public class MoipService {
 
         br.com.moip.resource.Order moipOrder = moipAPI.order().create(new OrderRequest()
                 .ownId("1")
-                .addItem(order.getProduct().getDescription(), 1, order.getProduct().getDescription(), order.getFinalPrice())
+                .addItem(order.getProduct().getDescription(), 1, order.getProduct().getDescription(),
+                        order.getFinalPrice().multiply(BigDecimal.valueOf(100)).intValue())
                 .customer(new CustomerRequest()
                         .ownId("1")
                         .fullname("Jose da Silva")

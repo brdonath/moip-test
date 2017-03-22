@@ -9,14 +9,24 @@ angular.module("myApp")
         };
 
     }])
-    .controller("CheckoutController", ['$scope', '$stateParams','Order', function ($scope, $stateParams, Order) {
+    .controller("CheckoutController", ['$scope','$state', '$stateParams', 'Order', function ($scope, $state, $stateParams, Order) {
         $scope.product = $stateParams.product;
+        $scope.cartProd = {
+            finalPrice: $scope.product.price,
+            diffPrice: {
+                cupom: 0,
+                inst: 0
+            }
+        };
+        $scope.buyBtnDisabled = false;
+        $scope.buyBtn = "Compre Agora";
         $scope.cc = {
-            cc_number : "4012001037141112",
-            cc_cvc : "123",
-            cc_exp_month : "12",
-            cc_exp_year : "18",
-            public_key : "-----BEGIN PUBLIC KEY-----"
+            cc_number: "4012001037141112",
+            cc_cvc: "123",
+            cc_exp_month: "12",
+            cc_exp_year: "18",
+            cc_installments: "1",
+            public_key: "-----BEGIN PUBLIC KEY-----"
             + "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoBttaXwRoI1Fbcond5mS"
             + "7QOb7X2lykY5hvvDeLJelvFhpeLnS4YDwkrnziM3W00UNH1yiSDU+3JhfHu5G387"
             + "O6uN9rIHXvL+TRzkVfa5iIjG+ap2N0/toPzy5ekpgxBicjtyPHEgoU6dRzdszEF4"
@@ -27,27 +37,60 @@ angular.module("myApp")
             + "-----END PUBLIC KEY-----"
         };
 
-        $scope.placeAnOrder = function(cc, product, finalPrice){
+        $scope.placeAnOrder = function (cc, product, finalPrice) {
             var ccObj = new Moip.CreditCard({
-                number  : cc.cc_number,
-                cvc     : cc.cc_cvc,
+                number: cc.cc_number,
+                cvc: cc.cc_cvc,
                 expMonth: cc.cc_exp_month,
-                expYear : cc.cc_exp_year,
-                pubKey  : cc.public_key
+                expYear: cc.cc_exp_year,
+                pubKey: cc.public_key
             });
 
-            if(ccObj.isValid()) {
-                console.log(ccObj.hash());
-                var order = {
-                    ccHash : ccObj.hash(),
-                    product :product,
-                    finalPrice : finalPrice
-                };
+            if (!ccObj.isValid()) {
+                alert("cartão inválido");
+                return;
+            }
 
-                new Order(order).$save(function(order) {
-                    console.log(order);
-                });
+            $scope.buyBtnDisabled = true;
+            $scope.buyBtn = "Aguarde...";
+
+            new Order({
+                ccHash: ccObj.hash(),
+                product: product,
+                finalPrice: $scope.cartProd.finalPrice,
+                installments: cc.cc_installments
+            }).$save(function (order) {
+                console.log(order);
+                $state.go("receipt");
+            }, function (err) {
+                alert("algo deu errado, tente novamente.")
+            });
+        };
+
+        $scope.addCupom = function (cupom) {
+            if (cupom.length > 0 && !$scope.cartProd.diffPrice.cupom) {
+                $scope.cartProd.diffPrice.cupom = $scope.product.price * -0.05;
+                calcFinalPrice();
+                alert("cupom adicionado com sucesso");
             }
         };
+
+        $scope.addInst = function (installments) {
+            $scope.cartProd.diffPrice.inst = $scope.product.price * 0.025;
+            if (installments == 1) {
+                $scope.cartProd.diffPrice.inst = 0;
+            }
+            calcFinalPrice();
+        };
+
+        var calcFinalPrice = function () {
+            $scope.cartProd.finalPrice = $scope.product.price +
+                $scope.cartProd.diffPrice.cupom +
+                $scope.cartProd.diffPrice.inst;
+        };
+    }])
+    .controller("ReceiptController", ['$scope', function ($scope) {
+
+
     }]);
 
