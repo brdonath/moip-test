@@ -54,11 +54,11 @@ public class MoipService {
         API moipAPI = moipAuth.getMoipAPI();
 
         br.com.moip.resource.Order moipOrder = moipAPI.order().create(new OrderRequest()
-                .ownId("1")
+                .ownId("ABC-123-DEF")
                 .addItem(order.getProduct().getDescription(), 1, order.getProduct().getDescription(),
                         order.getFinalPrice().multiply(BigDecimal.valueOf(100)).intValue())
                 .customer(new CustomerRequest()
-                        .ownId("1")
+                        .ownId("AEEEEEMMMMPPPP")
                         .fullname("Jose da Silva")
                         .email("josedasilva@email.com")
                         .birthdate(new ApiDateRequest().date(new Date()))
