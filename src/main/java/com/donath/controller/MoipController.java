@@ -47,6 +47,6 @@ public class MoipController {
             order.setStatus(Order.Status.OK);
         }
         orderRepository.saveAndFlush(order);
-        confirmationTopicService.send("message", status);*/
+        confirmationTopicService.send("message", status);
     }
 }
