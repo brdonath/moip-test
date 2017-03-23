@@ -30,13 +30,14 @@ public class MoipController {
     public void response(@RequestBody JsonNode node) {
         System.out.printf("oi bruno" + node.asText());
         String status = node.path("resource").path("payment").path("status").asText();
-        System.out.printf("status: " + status);
+        System.out.println("status: " + status);
 
         String paymentId = node.path("resource").path("payment").path("id").asText();
-        System.out.printf("paymentId: " + paymentId);
+        System.out.println("paymentId: " + paymentId);
 
         Order order = orderRepository.findOneByPaymentId(paymentId);
         if (order == null) {
+            System.out.println("order: " + null);
             return;
         }
 
@@ -47,6 +48,7 @@ public class MoipController {
             order.setStatus(Order.Status.OK);
         }
         orderRepository.saveAndFlush(order);
+        System.out.println("send to topic");
         confirmationTopicService.send("message", status);
     }
 }
