@@ -7,30 +7,6 @@ angular.module("myApp")
         $scope.checkout = function (product) {
             $state.go('checkout', {product: product});
         };
-
-        var socket = new SockJS('/ws');
-        var stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/' +  'message', function (res) {
-                alert(res);
-                // $scope.statusList.push({
-                //     message : "Aguardando resposta..., seu status atual:",
-                //     status : res.body
-                // });
-                // if (res.body == "AUTHORIZED") {
-                //     $scope.statusList.push({
-                //         message : "Sua compra foi realizada com sucesso",
-                //         status : ""
-                //     });
-                //     stompClient.unsubscribe();
-                //     stompClient.disconnect();
-                // }
-                $scope.$apply();
-            });
-            $scope.$apply();
-        });
-
     }])
     .controller("CheckoutController", ['$scope', '$state', '$stateParams', 'Order', function ($scope, $state, $stateParams, Order) {
         $scope.product = $stateParams.product;
@@ -125,5 +101,26 @@ angular.module("myApp")
             alert("algo deu errado, tente novamente.")
         });
 
+        var socket = new SockJS('/ws');
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/' +  'message', function (res) {
+                $scope.statusList.push({
+                    message : "Aguardando resposta..., seu status atual:",
+                    status : res.body
+                });
+                if (res.body == "AUTHORIZED") {
+                    $scope.statusList.push({
+                        message : "Sua compra foi realizada com sucesso",
+                        status : ""
+                    });
+                    stompClient.unsubscribe();
+                    stompClient.disconnect();
+                }
+                $scope.$apply();
+            });
+            $scope.$apply();
+        });
     }]);
 
