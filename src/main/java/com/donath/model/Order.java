@@ -30,6 +30,17 @@ public class Order {
     @Transient
     private String ccHash;
 
+    public boolean hasCupom() {
+        return cupom;
+    }
+
+    public void setCupom(boolean cupom) {
+        this.cupom = cupom;
+    }
+
+    @Transient
+    private boolean cupom;
+
     public String getId() {
         return id;
     }

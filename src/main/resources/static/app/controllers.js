@@ -13,9 +13,11 @@ angular.module("myApp")
         $scope.product = $stateParams.product;
         $scope.cartProd = {
             finalPrice: $scope.product.price,
+            hasCupom : false,
+            hasInstallments : false,
             diffPrice: {
                 cupom: 0,
-                inst: 0
+                inst : 0
             }
         };
         $scope.buyBtnDisabled = false;
@@ -37,7 +39,7 @@ angular.module("myApp")
             + "-----END PUBLIC KEY-----"
         };
 
-        $scope.placeAnOrder = function (cc, product, finalPrice) {
+        $scope.placeAnOrder = function (cc, product) {
             var ccObj = new Moip.CreditCard({
                 number: cc.cc_number,
                 cvc: cc.cc_cvc,
@@ -57,7 +59,7 @@ angular.module("myApp")
             new Order({
                 ccHash: ccObj.hash(),
                 product: product,
-                finalPrice: $scope.cartProd.finalPrice,
+                cupom:  $scope.cartProd.hasCupom,
                 installments: cc.cc_installments
             }).$save(function (order) {
                 console.log(order);
@@ -69,6 +71,7 @@ angular.module("myApp")
 
         $scope.addCupom = function (cupom) {
             if (cupom.length > 0 && !$scope.cartProd.diffPrice.cupom) {
+                $scope.cartProd.hasCupom = true;
                 $scope.cartProd.diffPrice.cupom = $scope.product.price * -0.05;
                 calcFinalPrice();
                 alert("cupom adicionado com sucesso");
@@ -76,17 +79,20 @@ angular.module("myApp")
         };
 
         $scope.addInst = function (installments) {
-            $scope.cartProd.diffPrice.inst = $scope.product.price * 0.025;
-            if (installments == 1) {
-                $scope.cartProd.diffPrice.inst = 0;
-            }
+            $scope.cartProd.hasInstallments = installments > 1;
             calcFinalPrice();
         };
 
         var calcFinalPrice = function () {
-            $scope.cartProd.finalPrice = $scope.product.price +
-                $scope.cartProd.diffPrice.cupom +
-                $scope.cartProd.diffPrice.inst;
+            $scope.cartProd.finalPrice = $scope.product.price;
+            $scope.cartProd.diffPrice.inst = 0;
+            if($scope.cartProd.hasCupom){
+                $scope.cartProd.finalPrice += $scope.cartProd.diffPrice.cupom;
+            }
+            if($scope.cartProd.hasInstallments){
+                $scope.cartProd.diffPrice.inst = $scope.cartProd.finalPrice * 0.025;
+                $scope.cartProd.finalPrice += $scope.cartProd.diffPrice.inst;
+            }
         };
     }])
     .controller("ReceiptController", ['$scope', '$stateParams', function ($scope, $stateParams) {
@@ -100,14 +106,21 @@ angular.module("myApp")
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/' + $stateParams.order.paymentId, function (res) {
-                $scope.statusList.push("Aguardando resposta..., seu status atual: " + res.body);
+                $scope.statusList.push({
+                    message : "Aguardando resposta..., seu status atual:",
+                    status : res.body
+                });
                 if (res.body == "AUTHORIZED") {
-                    $scope.statusList.push("Sua compra foi realizada com sucesso");
+                    $scope.statusList.push({
+                        message : "Sua compra foi realizada com sucesso",
+                        status : ""
+                    });
                     stompClient.unsubscribe();
                     stompClient.disconnect();
                 }
                 $scope.$apply();
             });
+            $scope.$apply();
         });
     }]);
 
