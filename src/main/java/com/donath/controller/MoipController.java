@@ -48,7 +48,7 @@ public class MoipController {
 //            order.setStatus(Order.Status.OK);
 //        }
 //        orderRepository.saveAndFlush(order);
-        System.out.println("send to topic");
+        System.out.println("send to topic" + "/topic/" + paymentId);
         confirmationTopicService.send(paymentId, status);
     }
 }
