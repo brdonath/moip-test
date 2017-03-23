@@ -23,10 +23,10 @@ angular.module("myApp")
         $scope.buyBtnDisabled = false;
         $scope.buyBtn = "Compre Agora";
         $scope.cc = {
-            // cc_number: "4012001037141112",
-            // cc_cvc: "123",
-            // cc_exp_month: "12",
-            // cc_exp_year: "18",
+            cc_number: "4012001037141112",
+            cc_cvc: "123",
+            cc_exp_month: "12",
+            cc_exp_year: "18",
             cc_installments: "1",
             public_key: "-----BEGIN PUBLIC KEY-----"
             + "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoBttaXwRoI1Fbcond5mS"
@@ -56,17 +56,13 @@ angular.module("myApp")
             $scope.buyBtnDisabled = true;
             $scope.buyBtn = "Aguarde...";
 
-            new Order({
+            var finalOrder = {
                 ccHash: ccObj.hash(),
                 product: product,
                 cupom:  $scope.cartProd.hasCupom,
                 installments: cc.cc_installments
-            }).$save(function (order) {
-                console.log(order);
-                $state.go("receipt", {order: order});
-            }, function (err) {
-                alert("algo deu errado, tente novamente.")
-            });
+            };
+            $state.go("receipt", {order: finalOrder});
         };
 
         $scope.addCupom = function (cupom) {
@@ -95,17 +91,24 @@ angular.module("myApp")
             }
         };
     }])
-    .controller("ReceiptController", ['$scope', '$stateParams', function ($scope, $stateParams) {
+    .controller("ReceiptController", ['$scope', '$stateParams','Order', function ($scope, $stateParams,Order) {
 
         $scope.statusList = [];
         $scope.order = $stateParams.order;
+
+        new Order($scope.order).$save(function (order) {
+            console.log(order);
+        }, function (err) {
+            alert("algo deu errado, tente novamente.")
+        });
+
 
         var socket = new SockJS('/ws');
 
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/' + $stateParams.order.paymentId, function (res) {
+            stompClient.subscribe('/topic/' +  'message', function (res) {
                 $scope.statusList.push({
                     message : "Aguardando resposta..., seu status atual:",
                     status : res.body
