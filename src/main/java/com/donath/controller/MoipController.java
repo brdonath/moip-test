@@ -27,6 +27,7 @@ public class MoipController {
     @RequestMapping("/response")
     @ResponseStatus(HttpStatus.OK)
     public void response(@RequestBody JsonNode node) {
+        System.out.printf(node.asText());
         String status = node.path("resource").path("payment").path("status").asText();
         String paymentId = node.path("resource").path("payment").path("id").asText();
 
