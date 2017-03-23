@@ -105,7 +105,7 @@ angular.module("myApp")
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/message', function (res) {
+            stompClient.subscribe('/topic/' + $stateParams.order.paymentId, function (res) {
                 $scope.statusList.push({
                     message : "Aguardando resposta..., seu status atual:",
                     status : res.body
