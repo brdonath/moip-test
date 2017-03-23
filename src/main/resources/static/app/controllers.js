@@ -97,29 +97,32 @@ angular.module("myApp")
 
         new Order($scope.order).$save(function (order) {
             console.log(order);
-            var socket = new SockJS('/ws');
-            var stompClient = Stomp.over(socket);
-            stompClient.connect({}, function (frame) {
-                console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/' + order.paymentId, function (res) {
-                    $scope.statusList.push({
-                        message : "Aguardando resposta..., seu status atual:",
-                        status : res.body
-                    });
-                    if (res.body == "AUTHORIZED") {
-                        $scope.statusList.push({
-                            message : "Sua compra foi realizada com sucesso",
-                            status : ""
-                        });
-                        stompClient.unsubscribe();
-                        stompClient.disconnect();
-                    }
-                    $scope.$apply();
-                });
-                $scope.$apply();
-            });
         }, function (err) {
             alert("algo deu errado, tente novamente.")
         });
+
+        var socket = new SockJS('/ws');
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/message', function (res) {
+                $scope.statusList.push({
+                    message : "Aguardando resposta..., seu status atual:",
+                    status : res.body
+                });
+                if (res.body == "AUTHORIZED") {
+                    $scope.statusList.push({
+                        message : "Sua compra foi realizada com sucesso",
+                        status : ""
+                    });
+                    stompClient.unsubscribe();
+                    stompClient.disconnect();
+                }
+                $scope.$apply();
+            });
+            $scope.$apply();
+        });
+
+
     }]);
 

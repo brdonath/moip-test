@@ -28,27 +28,12 @@ public class MoipController {
     @RequestMapping(value = "/response", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void response(@RequestBody JsonNode node) {
-        System.out.printf("oi bruno" + node.asText());
         String status = node.path("resource").path("payment").path("status").asText();
-        System.out.println("status: " + status);
 
         String paymentId = node.path("resource").path("payment").path("id").asText();
-        System.out.println("paymentId: " + paymentId);
 
         Order order = orderRepository.findOneByPaymentId(paymentId);
-//        if (order == null) {
-//            System.out.println("order: " + null);
-//            return;
-//        }
-//
-//        if (status.equals("WAITING") || status.equals("IN_ANALYSIS")) {
-//            order.setStatus(Order.Status.PROCESSING);
-//
-//        } else if (status.equals("AUTHORIZED")) {
-//            order.setStatus(Order.Status.OK);
-//        }
-//        orderRepository.saveAndFlush(order);
-        System.out.println("send to topic" + "/topic/" + paymentId);
-        confirmationTopicService.send(paymentId, status);
+
+        confirmationTopicService.send("message", status);
     }
 }
