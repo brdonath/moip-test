@@ -32,6 +32,8 @@ public class MoipController {
 
         String paymentId = node.path("resource").path("payment").path("id").asText();
 
+        System.out.println("todos no banco " + orderRepository.findAll());
+
         Order order = orderRepository.findOneByPaymentId(paymentId);
 
         confirmationTopicService.send("message", status);
