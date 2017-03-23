@@ -12,11 +12,11 @@ angular.module("myApp")
         $scope.product = $stateParams.product;
         $scope.cartProd = {
             finalPrice: $scope.product.price,
-            hasCupom : false,
-            hasInstallments : false,
+            hasCupom: false,
+            hasInstallments: false,
             diffPrice: {
                 cupom: 0,
-                inst : 0
+                inst: 0
             }
         };
         $scope.buyBtnDisabled = false;
@@ -58,7 +58,7 @@ angular.module("myApp")
             var finalOrder = {
                 ccHash: ccObj.hash(),
                 product: product,
-                cupom:  $scope.cartProd.hasCupom,
+                cupom: $scope.cartProd.hasCupom,
                 installments: cc.cc_installments
             };
             $state.go("receipt", {order: finalOrder});
@@ -81,36 +81,35 @@ angular.module("myApp")
         var calcFinalPrice = function () {
             $scope.cartProd.finalPrice = $scope.product.price;
             $scope.cartProd.diffPrice.inst = 0;
-            if($scope.cartProd.hasCupom){
+            if ($scope.cartProd.hasCupom) {
                 $scope.cartProd.finalPrice += $scope.cartProd.diffPrice.cupom;
             }
-            if($scope.cartProd.hasInstallments){
+            if ($scope.cartProd.hasInstallments) {
                 $scope.cartProd.diffPrice.inst = $scope.cartProd.finalPrice * 0.025;
                 $scope.cartProd.finalPrice += $scope.cartProd.diffPrice.inst;
             }
         };
     }])
-    .controller("ReceiptController", ['$scope', '$stateParams','Order', function ($scope, $stateParams,Order) {
+    .controller("ReceiptController", ['$scope', '$stateParams', 'Order', function ($scope, $stateParams, Order) {
 
         $scope.statusList = [];
         $scope.order = $stateParams.order;
 
         var socket = new SockJS('/ws');
         var stompClient = Stomp.over(socket);
-
-        new Order($scope.order).$save(function (order) {
-            console.log(order);
-            stompClient.connect({}, function (frame) {
-                console.log('Connected: ' + frame);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            new Order($scope.order).$save(function (order) {
+                console.log(order);
                 stompClient.subscribe('/topic/' + order.paymentId, function (res) {
                     $scope.statusList.push({
-                        message : "Aguardando resposta..., seu status atual:",
-                        status : res.body
+                        message: "Aguardando resposta..., seu status atual:",
+                        status: res.body
                     });
                     if (res.body == "AUTHORIZED") {
                         $scope.statusList.push({
-                            message : "Sua compra foi realizada com sucesso",
-                            status : ""
+                            message: "Sua compra foi realizada com sucesso",
+                            status: ""
                         });
                         stompClient.unsubscribe();
                         stompClient.disconnect();
@@ -118,9 +117,10 @@ angular.module("myApp")
                     $scope.$apply();
                 });
                 $scope.$apply();
+
+            }, function (err) {
+                alert("algo deu errado, tente novamente.")
             });
-        }, function (err) {
-            alert("algo deu errado, tente novamente.")
         });
 
 
