@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
@@ -24,10 +25,10 @@ public class MoipController {
     @Autowired
     private OrderRepository orderRepository;
 
-    @RequestMapping("/response")
+    @RequestMapping(value = "/response", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void response(@RequestBody JsonNode node) {
-        System.out.printf(node.asText());
+    public void response(@RequestBody String node) {
+        System.out.printf("oi bruno" + node);/*
         String status = node.path("resource").path("payment").path("status").asText();
         String paymentId = node.path("resource").path("payment").path("id").asText();
 
@@ -43,6 +44,6 @@ public class MoipController {
             order.setStatus(Order.Status.OK);
         }
         orderRepository.saveAndFlush(order);
-        confirmationTopicService.send("message", status);
+        confirmationTopicService.send("message", status);*/
     }
 }
