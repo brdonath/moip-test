@@ -96,15 +96,7 @@ angular.module("myApp")
         $scope.statusList = [];
         $scope.order = $stateParams.order;
 
-        new Order($scope.order).$save(function (order) {
-            console.log(order);
-        }, function (err) {
-            alert("algo deu errado, tente novamente.")
-        });
-
-
         var socket = new SockJS('/ws');
-
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
@@ -125,5 +117,13 @@ angular.module("myApp")
             });
             $scope.$apply();
         });
+
+
+        new Order($scope.order).$save(function (order) {
+            console.log(order);
+        }, function (err) {
+            alert("algo deu errado, tente novamente.")
+        });
+
     }]);
 
