@@ -95,10 +95,11 @@ angular.module("myApp")
         $scope.statusList = [];
         $scope.order = $stateParams.order;
 
+        var socket = new SockJS('/ws');
+        var stompClient = Stomp.over(socket);
+
         new Order($scope.order).$save(function (order) {
             console.log(order);
-            var socket = new SockJS('/ws');
-            var stompClient = Stomp.over(socket);
             stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/topic/' + order.paymentId, function (res) {
