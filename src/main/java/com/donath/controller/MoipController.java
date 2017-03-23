@@ -33,7 +33,7 @@ public class MoipController {
 
         //gambiarra pra manter sincronismo do server moip
         System.out.println("SLEEEEEP");
-        Thread.sleep(TimeUnit.SECONDS.toMillis(5));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(10));
 
         Order order = orderRepository.findOneByPaymentId(paymentId);
         if(order != null && "AUTHORIZED".equals(status)){
