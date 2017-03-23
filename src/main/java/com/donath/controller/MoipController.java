@@ -36,18 +36,18 @@ public class MoipController {
         System.out.println("paymentId: " + paymentId);
 
         Order order = orderRepository.findOneByPaymentId(paymentId);
-        if (order == null) {
-            System.out.println("order: " + null);
-            return;
-        }
-
-        if (status.equals("WAITING") || status.equals("IN_ANALYSIS")) {
-            order.setStatus(Order.Status.PROCESSING);
-
-        } else if (status.equals("AUTHORIZED")) {
-            order.setStatus(Order.Status.OK);
-        }
-        orderRepository.saveAndFlush(order);
+//        if (order == null) {
+//            System.out.println("order: " + null);
+//            return;
+//        }
+//
+//        if (status.equals("WAITING") || status.equals("IN_ANALYSIS")) {
+//            order.setStatus(Order.Status.PROCESSING);
+//
+//        } else if (status.equals("AUTHORIZED")) {
+//            order.setStatus(Order.Status.OK);
+//        }
+//        orderRepository.saveAndFlush(order);
         System.out.println("send to topic");
         confirmationTopicService.send("message", status);
     }
