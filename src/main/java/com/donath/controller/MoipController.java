@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-/**
- * Created by cin_bdonath on 21/03/2017.
- */
 @Controller
 @RequestMapping("/moip")
 public class MoipController {
@@ -34,7 +31,7 @@ public class MoipController {
         String paymentId = node.path("resource").path("payment").path("id").asText();
 
         Order order = orderRepository.findOneByPaymentId(paymentId);
-        if(order == null){
+        if (order == null) {
             return;
         }
 

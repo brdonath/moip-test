@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
-/**
- * Created by cin_bdonath on 21/03/2017.
- */
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -26,7 +23,7 @@ public class OrderController {
     private OrderRepository orderRepository;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Order placeAnOrder(@RequestBody Order order){
+    public Order placeAnOrder(@RequestBody Order order) {
         order.setStatus(Order.Status.PROCESSING);
         order.setFinalPrice(calcPrice(order));
 
@@ -40,10 +37,10 @@ public class OrderController {
 
     private BigDecimal calcPrice(Order order) {
         BigDecimal finalPrice = order.getProduct().getPrice();
-        if(order.hasCupom()){
+        if (order.hasCupom()) {
             finalPrice = finalPrice.multiply(BigDecimal.valueOf(0.95));
         }
-        if(order.getInstallments() > 1){
+        if (order.getInstallments() > 1) {
             finalPrice = finalPrice.multiply(BigDecimal.valueOf(1.025));
         }
         return finalPrice;

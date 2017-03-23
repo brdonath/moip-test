@@ -8,9 +8,6 @@ import com.donath.model.Order;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by cin_bdonath on 21/03/2017.
- */
 @Component
 public class MoipAuth {
 
@@ -20,7 +17,7 @@ public class MoipAuth {
     @Value("${moip.chave}")
     private String secret;
 
-    public API getMoipAPI(){
+    public API getMoipAPI() {
         Authentication auth = new BasicAuth(token, secret);
         Client client = new Client(Client.SANDBOX, auth);
         return new API(client);

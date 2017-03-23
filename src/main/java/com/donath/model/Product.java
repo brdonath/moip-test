@@ -7,45 +7,45 @@ import java.math.BigDecimal;
 @Entity
 public class Product {
 
-  @Id
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column
-  private String description;
+    @Column
+    private String description;
 
-  @Column
-  private BigDecimal price;
+    @Column
+    private BigDecimal price;
 
-  public Product(String description, BigDecimal price) {
-    this.description = description;
-    this.price = price;
-  }
+    public Product(String description, BigDecimal price) {
+        this.description = description;
+        this.price = price;
+    }
 
-  public Product(){
-  }
+    public Product() {
+    }
 
-  public BigDecimal getPrice() {
-    return price;
-  }
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

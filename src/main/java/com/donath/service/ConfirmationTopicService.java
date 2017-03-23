@@ -6,9 +6,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by cin_bdonath on 22/03/2017.
- */
 @Service
 public class ConfirmationTopicService {
 

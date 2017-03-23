@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by cin_bdonath on 21/03/2017.
- */
+
 @Service
 public class MoipService {
 

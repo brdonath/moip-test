@@ -3,9 +3,6 @@ package com.donath.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-/**
- * Created by cin_bdonath on 21/03/2017.
- */
 @Entity(name = "PLACE_ORDER")
 public class Order {
 

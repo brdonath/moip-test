@@ -23,10 +23,10 @@ angular.module("myApp")
         $scope.buyBtnDisabled = false;
         $scope.buyBtn = "Compre Agora";
         $scope.cc = {
-            cc_number: "4012001037141112",
-            cc_cvc: "123",
-            cc_exp_month: "12",
-            cc_exp_year: "18",
+            // cc_number: "4012001037141112",
+            // cc_cvc: "123",
+            // cc_exp_month: "12",
+            // cc_exp_year: "18",
             cc_installments: "1",
             public_key: "-----BEGIN PUBLIC KEY-----"
             + "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoBttaXwRoI1Fbcond5mS"
