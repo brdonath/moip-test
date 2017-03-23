@@ -31,7 +31,9 @@ public class MoipController {
 
         String paymentId = node.path("resource").path("payment").path("id").asText();
 
-        //gambiarra pra manter sincronismo do server moip
+        //sorry, isso é uma gambiarra porque o server de testes não retorna authorized
+        //então eu informo ao cliente os status que chegam (WAITING e IN_analysis)
+        //e esses dados chegam mais rápidos que a criação do tópico.
         System.out.println("SLEEEEEP");
         Thread.sleep(TimeUnit.SECONDS.toMillis(10));
 
