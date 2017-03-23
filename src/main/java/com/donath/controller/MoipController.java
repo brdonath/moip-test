@@ -27,10 +27,13 @@ public class MoipController {
 
     @RequestMapping(value = "/response", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void response(@RequestBody String node) {
-        System.out.printf("oi bruno" + node);/*
+    public void response(@RequestBody JsonNode node) {
+        System.out.printf("oi bruno" + node.asText());
         String status = node.path("resource").path("payment").path("status").asText();
+        System.out.printf("status: " + status);
+
         String paymentId = node.path("resource").path("payment").path("id").asText();
+        System.out.printf("paymentId: " + paymentId);
 
         Order order = orderRepository.findOneByPaymentId(paymentId);
         if (order == null) {
