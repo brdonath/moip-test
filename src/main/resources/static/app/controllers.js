@@ -116,8 +116,6 @@ angular.module("myApp")
                     }
                     $scope.$apply();
                 });
-                $scope.$apply();
-
             }, function (err) {
                 alert("algo deu errado, tente novamente.")
             });
