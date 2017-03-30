@@ -4,7 +4,6 @@ import br.com.moip.API;
 import br.com.moip.Client;
 import br.com.moip.authentication.Authentication;
 import br.com.moip.authentication.BasicAuth;
-import com.donath.model.Order;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

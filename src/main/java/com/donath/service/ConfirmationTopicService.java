@@ -6,15 +6,11 @@ import com.donath.model.Subscriber;
 import com.donath.model.moip.Payment;
 import com.donath.repository.StalledEventRepository;
 import com.donath.repository.SubscriberRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ConfirmationTopicService {

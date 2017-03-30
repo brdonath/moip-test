@@ -1,13 +1,12 @@
 package com.donath.controller;
 
-import java.util.List;
-
 import com.donath.factory.ProductFactory;
+import com.donath.model.Product;
 import com.donath.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.donath.model.Product;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
