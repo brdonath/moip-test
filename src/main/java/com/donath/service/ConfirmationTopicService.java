@@ -1,5 +1,6 @@
 package com.donath.service;
 
+import com.donath.model.moip.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -16,7 +17,7 @@ public class ConfirmationTopicService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void send(String paymentId, final String status) {
-        this.messagingTemplate.convertAndSend("/topic/" + paymentId, status);
+    public void send(Payment payment) {
+        this.messagingTemplate.convertAndSend("/topic/" + payment.getId(), payment.getStatus());
     }
 }

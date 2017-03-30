@@ -106,7 +106,7 @@ angular.module("myApp")
                         message: "Aguardando resposta..., seu status atual:",
                         status: res.body
                     });
-                    if (res.body == "AUTHORIZED") {
+                    if (res.body === "AUTHORIZED") {
                         $scope.statusList.push({
                             message: "Sua compra foi realizada com sucesso",
                             status: ""

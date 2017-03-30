@@ -1,9 +1,10 @@
 package com.donath.controller;
 
 import com.donath.model.Order;
+import com.donath.model.moip.Payment;
+import com.donath.model.moip.Response;
 import com.donath.repository.OrderRepository;
 import com.donath.service.ConfirmationTopicService;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/moip")
@@ -26,23 +25,15 @@ public class MoipController {
 
     @RequestMapping(value = "/response", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void response(@RequestBody JsonNode node) throws InterruptedException {
-        String status = node.path("resource").path("payment").path("status").asText();
+    public void response(@RequestBody Response response) throws InterruptedException {
 
-        String paymentId = node.path("resource").path("payment").path("id").asText();
-
-        //sorry, isso é uma gambiarra porque o server de testes não retorna authorized
-        //então eu informo ao cliente os status que chegam (WAITING e IN_analysis)
-        //e esses dados chegam mais rápidos que a criação do tópico.
-        System.out.println("SLEEEEEP");
-        Thread.sleep(TimeUnit.SECONDS.toMillis(10));
-
-        Order order = orderRepository.findOneByPaymentId(paymentId);
-        if(order != null && "AUTHORIZED".equals(status)){
+        Payment payment = response.getResource().getPayment();
+        Order order = orderRepository.findOneByPaymentId(payment.getId());
+        if(order != null && "AUTHORIZED".equals(payment.getStatus())){
             order.setStatus(Order.Status.OK);
             orderRepository.saveAndFlush(order);
         }
 
-        confirmationTopicService.send(paymentId, status);
+        confirmationTopicService.send(payment);
     }
 }
