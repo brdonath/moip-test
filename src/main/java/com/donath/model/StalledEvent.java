@@ -1,9 +1,6 @@
 package com.donath.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class StalledEvent {
@@ -12,10 +9,13 @@ public class StalledEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column
     private String paymentId;
 
+    @Column
     private Order.Status status;
 
+    @Column
     private boolean sent = false;
 
     public Integer getId() {
@@ -48,5 +48,15 @@ public class StalledEvent {
 
     public void setSent(boolean sent) {
         this.sent = sent;
+    }
+
+    @Override
+    public String toString() {
+        return "StalledEvent{" +
+                "id=" + id +
+                ", paymentId='" + paymentId + '\'' +
+                ", status=" + status +
+                ", sent=" + sent +
+                '}';
     }
 }

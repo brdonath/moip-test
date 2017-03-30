@@ -28,6 +28,9 @@ public class MoipController {
     public void response(@RequestBody Response response) throws InterruptedException {
 
         Payment payment = response.getResource().getPayment();
+
+        System.out.println("POST: payment " + payment);
+
         Order order = orderRepository.findOneByPaymentId(payment.getId());
         if(order != null && "AUTHORIZED".equals(payment.getStatus())){
             order.setStatus(Order.Status.OK);

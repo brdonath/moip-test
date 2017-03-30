@@ -20,4 +20,12 @@ public class Payment {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "status='" + status + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }
