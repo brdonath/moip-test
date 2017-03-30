@@ -101,7 +101,7 @@ angular.module("myApp")
             console.log('Connected: ' + frame);
             new Order($scope.order).$save(function (order) {
                 console.log(order);
-                stompClient.subscribe('/topic/pay' + order.paymentId, function (res) {
+                stompClient.subscribe('/topic/pay/' + order.paymentId, function (res) {
                     $scope.statusList.push({
                         message: "Aguardando resposta..., seu status atual:",
                         status: res.body
