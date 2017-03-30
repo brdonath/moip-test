@@ -34,8 +34,6 @@ public class ConfirmationTopicService {
         stalledEvent.setStatus(getStatus(payment.getStatus()));
         stalledEventRepository.saveAndFlush(stalledEvent);
 
-        System.out.println("stalled: " + stalledEvent);
-
         send(payment.getId());
     }
 
@@ -52,8 +50,6 @@ public class ConfirmationTopicService {
     }
 
     public void addSubs(String paymentId) {
-        System.out.println("subs added: " + paymentId);
-
         subscriberRepository.saveAndFlush(new Subscriber(paymentId));
         send(paymentId);
     }
