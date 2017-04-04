@@ -1,13 +1,14 @@
 # moip test
 
 ## run:
-* mvn spring-boot:run
+* **./mvnw spring-boot:run**
 * default : localhost:8080
 
 ## moip webhook (tem que ser configurado previamente):
 * **{server : port}**/moip/response
 * As chaves deve ser alteradas em application.properties
-### heroku demo: https://moip-test.herokuapp.com
+
+### heroku demo(conta teste): https://moip-test.herokuapp.com
 
 ###o que falta?
 * testes unitários
